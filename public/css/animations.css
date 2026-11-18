@@ -1,0 +1,191 @@
+/* ==========================================================================
+   Point of View — Animations
+   All @keyframes + load-in / scroll-reveal helpers live here.
+   Only transform and opacity are animated where possible (GPU friendly).
+   ========================================================================== */
+
+/* ---- Keyframes ----------------------------------------------------------- */
+@keyframes pov-marquee {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes pov-marquee-reverse {
+    from { transform: translate3d(-50%, 0, 0); }
+    to   { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes pov-fade-up {
+    from { opacity: 0; transform: translate3d(0, 32px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes pov-shimmer {
+    from { background-position: 0% 50%; }
+    to   { background-position: 200% 50%; }
+}
+
+@keyframes pov-float {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+    50%      { transform: translate3d(0, -18px, 0) rotate(6deg); }
+}
+
+@keyframes pov-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pov-pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 var(--pov-orange-40); }
+    50%      { box-shadow: 0 0 0 10px transparent; }
+}
+
+@keyframes pov-twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); }
+    50%      { opacity: 1; transform: scale(1) rotate(45deg); }
+}
+
+@keyframes pov-shake {
+    0%, 100% { transform: translateX(0); }
+    15%, 55% { transform: translateX(-8px); }
+    35%, 75% { transform: translateX(8px); }
+    90%      { transform: translateX(-3px); }
+}
+
+@keyframes pov-pop {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.45); }
+    60%  { transform: scale(0.88); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pov-particle {
+    from { opacity: 1; transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0) scale(1); }
+    to   { opacity: 0; transform: translate(-50%, -50%) rotate(var(--angle)) translateY(var(--distance)) scale(0.3); }
+}
+
+@keyframes pov-icon-bounce {
+    0%, 100% { transform: translateY(0); }
+    30%      { transform: translateY(-7px) rotate(-8deg); }
+    55%      { transform: translateY(0) rotate(4deg); }
+    75%      { transform: translateY(-3px); }
+}
+
+@keyframes pov-ripple {
+    to { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+@keyframes pov-sweep {
+    from { transform: translateX(-120%) skewX(-20deg); }
+    to   { transform: translateX(220%) skewX(-20deg); }
+}
+
+@keyframes pov-grain {
+    0%   { transform: translate(0, 0); }
+    25%  { transform: translate(-3%, 2%); }
+    50%  { transform: translate(2%, -3%); }
+    75%  { transform: translate(-2%, -1%); }
+    100% { transform: translate(1%, 3%); }
+}
+
+@keyframes pov-skeleton {
+    from { background-position: 150% 0; }
+    to   { background-position: -50% 0; }
+}
+
+@keyframes pov-caret {
+    0%, 49%   { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+@keyframes pov-toast-in {
+    from { opacity: 0; transform: translate3d(110%, 0, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes pov-toast-out {
+    to { opacity: 0; transform: translate3d(110%, 0, 0); }
+}
+
+@keyframes pov-toast-timer {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0); }
+}
+
+@keyframes pov-slide-in-right {
+    from { opacity: 0; transform: translate3d(24px, 0, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes pov-scroll-dot {
+    0%   { opacity: 0; transform: translateY(0); }
+    30%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(14px); }
+}
+
+@keyframes pov-reel-hole {
+    0%, 100% { opacity: 0.35; }
+    50%      { opacity: 1; }
+}
+
+/* ---- Page-load stagger --------------------------------------------------- */
+/* Elements with [data-load] start hidden (only when JS runs) and fade up
+   once <body> gets .is-loaded. Set the delay inline: style="--delay: .2s" */
+.js [data-load] { opacity: 0; }
+
+.js body.is-loaded [data-load] {
+    animation: pov-fade-up 0.9s var(--pov-ease) var(--delay, 0s) both;
+}
+
+/* ---- Scroll reveal ------------------------------------------------------- */
+/* Toggled by IntersectionObserver in animations.js. */
+.js [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+    transition:
+        opacity 0.8s var(--pov-ease) var(--reveal-delay, 0s),
+        transform 0.8s var(--pov-ease) var(--reveal-delay, 0s);
+}
+
+.js [data-reveal="left"]  { transform: translate3d(-48px, 0, 0); }
+.js [data-reveal="right"] { transform: translate3d(48px, 0, 0); }
+.js [data-reveal="zoom"]  { transform: scale(0.92); }
+
+.js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* ---- Floating decorations ------------------------------------------------ */
+.float-slow   { animation: pov-float 9s ease-in-out infinite; }
+.float-medium { animation: pov-float 6.5s ease-in-out infinite; }
+.float-fast   { animation: pov-float 4.5s ease-in-out infinite; }
+
+/* ---- Extra reveal variants ----------------------------------------------- */
+/* A line that "draws" itself from left to right */
+.js [data-reveal="line"] {
+    opacity: 1;
+    transform: scaleX(0);
+    transition: transform 1.6s var(--pov-ease) 0.3s;
+}
+
+/* Items re-appearing after a category filter */
+.filter-in { animation: pov-fade-up 0.55s var(--pov-ease) both; }
+
+/* ---- Reduced motion ------------------------------------------------------ */
+/* Respect the OS "reduce motion" setting: stop loops, keep content visible. */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+
+    .poster-row,
+    .film-grain,
+    .float-slow, .float-medium, .float-fast { animation: none !important; }
+
+    .js [data-load],
+    .js [data-reveal] { opacity: 1 !important; transform: none !important; }
+}

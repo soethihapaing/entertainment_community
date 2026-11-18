@@ -1,0 +1,180 @@
+/* ==========================================================================
+   Point of View — Base styles
+   Reset tweaks, typography, film grain, utilities shared by every page.
+   ========================================================================== */
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--pov-nav-height) + 1rem); /* anchors land below the fixed navbar */
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    font-family: var(--pov-font-body);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--pov-text);
+    background: var(--pov-midnight);
+    background-image: var(--pov-gradient-night);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Bootstrap overrides so its components follow our palette */
+:root {
+    --bs-body-bg: var(--pov-midnight);
+    --bs-body-color: var(--pov-text);
+    --bs-body-font-family: var(--pov-font-body);
+    --bs-link-color-rgb: 255, 158, 94;
+    --bs-link-hover-color-rgb: 255, 122, 47;
+    --bs-border-color: var(--pov-line);
+    --bs-secondary-color: var(--pov-muted);
+}
+
+/* ---- Typography ---------------------------------------------------------- */
+h1, h2, h3, .display-font {
+    font-family: var(--pov-font-display);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1;
+}
+
+h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+p { color: var(--pov-muted); }
+
+a {
+    color: var(--pov-glow);
+    text-decoration: none;
+    transition: color var(--pov-speed) var(--pov-ease);
+}
+
+a:hover { color: var(--pov-orange); }
+
+::selection {
+    background: var(--pov-orange);
+    color: var(--pov-midnight);
+}
+
+.text-muted-pov { color: var(--pov-muted) !important; }
+
+/* Sunset gradient text */
+.text-sunset {
+    background: var(--pov-gradient-sunset-wide);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* ---- Accessibility ------------------------------------------------------- */
+:focus-visible {
+    outline: 2px solid var(--pov-orange);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+.skip-link {
+    position: fixed;
+    top: -100px;
+    left: 1rem;
+    z-index: 3000;
+    padding: 0.6rem 1rem;
+    border-radius: var(--pov-radius-sm);
+    background: var(--pov-orange);
+    color: var(--pov-midnight);
+    font-weight: 600;
+    transition: top var(--pov-speed) var(--pov-ease);
+}
+
+.skip-link:focus { top: 1rem; color: var(--pov-midnight); }
+
+/* ---- Scrollbar ----------------------------------------------------------- */
+* { scrollbar-width: thin; scrollbar-color: var(--pov-orange-40) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--pov-midnight); }
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--pov-orange), var(--pov-pink));
+    border: 3px solid var(--pov-midnight);
+    border-radius: 999px;
+}
+
+/* ---- Film grain overlay -------------------------------------------------- */
+/* A tiny SVG noise texture that jitters a few times per second. */
+.film-grain {
+    position: fixed;
+    inset: -50%;
+    z-index: 2000;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: pov-grain 0.8s steps(4) infinite;
+}
+
+/* ---- Layout helpers ------------------------------------------------------ */
+/* Decorative orbs may poke outside the page; clip them without breaking position: sticky */
+#main-content { overflow-x: clip; outline: none; }
+
+.section {
+    position: relative;
+    padding: clamp(4rem, 9vw, 7.5rem) 0;
+}
+
+.section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid var(--pov-orange-40);
+    border-radius: var(--pov-radius-pill);
+    background: var(--pov-orange-10);
+    color: var(--pov-glow);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.section-title {
+    margin-bottom: 1rem;
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+}
+
+.section-lead {
+    max-width: 38rem;
+    font-size: 1.05rem;
+}
+
+/* Glass surface utility */
+.glass {
+    background: var(--pov-glass-bg);
+    border: 1px solid var(--pov-glass-border);
+    border-radius: var(--pov-radius-lg);
+    -webkit-backdrop-filter: blur(var(--pov-glass-blur)) saturate(140%);
+    backdrop-filter: blur(var(--pov-glass-blur)) saturate(140%);
+    box-shadow: var(--pov-shadow-card);
+}
+
+/* Soft decorative orbs */
+.orb {
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(60px);
+    opacity: 0.55;
+}
+
+.orb--orange { background: radial-gradient(circle, var(--pov-orange) 0%, transparent 70%); }
+.orb--pink { background: radial-gradient(circle, var(--pov-pink) 0%, transparent 70%); }
+.orb--blue { background: radial-gradient(circle, #2B4BB8 0%, transparent 70%); }
+
+/* Hide the custom cursor helpers and grain on touch screens */
+@media (hover: none), (pointer: coarse) {
+    .cursor-dot, .cursor-ring { display: none !important; }
+}
