@@ -1,0 +1,70 @@
+/* ==========================================================================
+   Point of View — Design tokens
+   Change the theme here. Every other file only uses these variables.
+   Transparent tints are built with color-mix(), so editing one hex value
+   below updates every glow, border and overlay that uses that color.
+   ========================================================================== */
+
+:root {
+    /* ---- Brand colors ---------------------------------------------------- */
+    --pov-dark-blue: #0B1530;
+    --pov-midnight: #070B1F;      /* main background */
+    --pov-card: #101A3A;          /* deep navy card */
+    --pov-orange: #FF7A2F;        /* primary accent / buttons */
+    --pov-glow: #FF9E5E;          /* sunset glow */
+    --pov-pink: #FF5E62;          /* warm pink-orange */
+    --pov-text: #EAF0FF;          /* main text */
+    --pov-muted: #9AA6C7;         /* muted text */
+
+    /* ---- Tints (auto-derived) -------------------------------------------- */
+    --pov-orange-10: color-mix(in srgb, var(--pov-orange) 10%, transparent);
+    --pov-orange-20: color-mix(in srgb, var(--pov-orange) 20%, transparent);
+    --pov-orange-40: color-mix(in srgb, var(--pov-orange) 40%, transparent);
+    --pov-orange-60: color-mix(in srgb, var(--pov-orange) 60%, transparent);
+    --pov-pink-30: color-mix(in srgb, var(--pov-pink) 30%, transparent);
+    --pov-line: color-mix(in srgb, var(--pov-text) 9%, transparent);
+    --pov-line-strong: color-mix(in srgb, var(--pov-text) 16%, transparent);
+    --pov-surface: color-mix(in srgb, var(--pov-text) 4%, transparent);
+    --pov-surface-hover: color-mix(in srgb, var(--pov-text) 8%, transparent);
+
+    /* ---- Gradients ------------------------------------------------------- */
+    --pov-gradient-night: linear-gradient(180deg, var(--pov-midnight) 0%, var(--pov-dark-blue) 100%);
+    --pov-gradient-sunset: linear-gradient(135deg, var(--pov-orange) 0%, var(--pov-pink) 100%);
+    --pov-gradient-sunset-wide: linear-gradient(120deg, var(--pov-glow) 0%, var(--pov-orange) 45%, var(--pov-pink) 100%);
+    --pov-gradient-shimmer: linear-gradient(90deg, var(--pov-text) 0%, var(--pov-glow) 25%, var(--pov-orange) 45%, var(--pov-pink) 60%, var(--pov-text) 80%, var(--pov-text) 100%);
+
+    /* ---- Glassmorphism --------------------------------------------------- */
+    --pov-glass-bg: color-mix(in srgb, var(--pov-card) 62%, transparent);
+    --pov-glass-bg-strong: color-mix(in srgb, var(--pov-card) 85%, transparent);
+    --pov-glass-border: var(--pov-line);
+    --pov-glass-blur: 16px;
+
+    /* ---- Shadows & glows ------------------------------------------------- */
+    --pov-shadow-card: 0 24px 48px -24px rgb(0 0 0 / 0.7);
+    --pov-shadow-glow: 0 12px 32px -8px var(--pov-orange-60);
+    --pov-shadow-glow-strong: 0 16px 44px -6px var(--pov-orange-60), 0 0 0 1px var(--pov-orange-40);
+
+    /* ---- Typography ------------------------------------------------------ */
+    --pov-font-display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+    --pov-font-body: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --pov-font-jp: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", "MS Mincho", serif;
+
+    /* ---- Shape ----------------------------------------------------------- */
+    --pov-radius-sm: 0.6rem;
+    --pov-radius: 1rem;
+    --pov-radius-lg: 1.5rem;
+    --pov-radius-pill: 999px;
+
+    /* ---- Motion ---------------------------------------------------------- */
+    --pov-ease: cubic-bezier(0.22, 1, 0.36, 1);          /* smooth "ease-out-quint" */
+    --pov-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* playful overshoot */
+    --pov-speed: 0.35s;
+    --pov-speed-slow: 0.6s;
+
+    /* ---- Layout ---------------------------------------------------------- */
+    --pov-nav-height: 76px;
+
+    /* ---- Poster background ----------------------------------------------- */
+    --poster-w: clamp(118px, 11vw, 184px);
+    --poster-gap: clamp(0.8rem, 1.4vw, 1.4rem);
+}

@@ -9,10 +9,12 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\TitleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PageController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Welcome / Status check
-Route::get('/', function (\Illuminate\Http\Request $request) {
+// Welcome / Status check (JSON API) & Home
+Route::get('/status', function (Request $request) {
     if ($request->expectsJson()) {
         return response()->json([
             'system' => 'Entertainment Community Platform API',
@@ -20,12 +22,16 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
             'time'   => now()->toDateTimeString(),
         ]);
     }
-    return redirect()->route('login');
-});
+    return redirect()->route('home');
+})->name('status');
 
-// Authentication Routes (Main System Page 1)
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/feed', [PageController::class, 'feed'])->name('feed');
+
+// Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/me', [AuthController::class, 'me'])->middleware('auth')->name('me');
 

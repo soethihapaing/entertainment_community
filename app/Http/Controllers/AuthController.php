@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Support\IntroAssets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +18,22 @@ class AuthController extends Controller
         if (Auth::check() && Auth::user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
-        return view('auth.login');
+
+        return view('auth.login', [
+            'mode'        => 'login',
+            'introAssets' => class_exists(IntroAssets::class) ? IntroAssets::toArray() : [],
+        ]);
+    }
+
+    /**
+     * Show Register Form (if your auth.login view supports register mode)
+     */
+    public function showRegister()
+    {
+        return view('auth.login', [
+            'mode'        => 'register',
+            'introAssets' => class_exists(IntroAssets::class) ? IntroAssets::toArray() : [],
+        ]);
     }
 
     /**
@@ -34,8 +50,8 @@ class AuthController extends Controller
 
         // Find user by email OR username
         $user = User::where('email', $loginInput)
-                    ->orWhere('username', $loginInput)
-                    ->first();
+            ->orWhere('username', $loginInput)
+            ->first();
 
         // Validate Credentials
         if (!$user || !Hash::check($credentials['password'], $user->password_hash)) {
@@ -45,6 +61,7 @@ class AuthController extends Controller
                     'message' => 'Invalid Login Credentials. Please check and retry.',
                 ], 401);
             }
+
             return back()->withErrors(['login' => 'Invalid username or password. Please try again.'])->withInput();
         }
 
@@ -57,6 +74,7 @@ class AuthController extends Controller
                     'message' => "Access Denied: Your account is {$user->account_status}.",
                 ], 403);
             }
+
             return back()->withErrors(['login' => $msg])->withInput();
         }
 
